@@ -62,5 +62,10 @@ All best configurations obtained from tuning on the development set are saved as
 
 Since the best configuration is named as ``tuned_on_fold1``, the command above will use that configuration and evaluate the model on the test set. In general, all run scripts have ``tuned_on_foldX`` named configuration, where ``X`` is the fold number. For ``run_neuralsum.py`` though, there are other named configurations, namely ``emb300_on_foldX`` and ``fasttext_on_foldX``, referring to the scenario of using word embedding size of 300 and fastText pretrained embedding respectively. Some run scripts do not have such named configurations; that is because their hyperparameters were not tuned/they do not have any.
 
+License
+=======
+
+Apache License, Version 2.0.
+
 
 .. [CL16] Cheng, J., & Lapata, M. (2016). Neural summarization by extracting sentences and words. In Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (pp. 484–494). Berlin, Germany: Association for Computational Linguistics. Retrieved from http://www.aclweb.org/anthology/P16-1046
