@@ -32,21 +32,66 @@ The command will put the oracle files for NeuralSum under ``neuralsum`` director
 Running experiments
 ===================
 
-The scripts to run the experiments are named ``run_<model>.py``. For instance, to run an experiment using LEAD, the script to use is ``run_lead.py``. All scripts use `Sacred <https://sacred.readthedocs.io>`_ so you can invoke each with ``help`` command to see its usage. The experiment configurations are fully documented. Run ``./run_<model>.py print_config`` to print all the available configurations and their docs. An example on how to evaluate a LEAD-N summarizer::
+The scripts to run the experiments are named ``run_<model>.py``. For instance, to run an experiment using LEAD, the script to use is ``run_lead.py``. All scripts use `Sacred <https://sacred.readthedocs.io>`_ so you can invoke each with ``help`` command to see its usage. The experiment configurations are fully documented. Run ``./run_<model>.py print_config`` to print all the available configurations and their docs.
 
-    $ ./run_lead.py evaluate with corpus.test=test.01.jsonl
+Training a model
+----------------
+
+To train a model, for example the naive Bayes model, run ``print_config`` command first to see the available configurations::
+
+    $ ./run_bayes.py print_config
+
+This command will give an output something like::
+
+    INFO - summarization-bayes-testrun - Running command 'print_config'
+    INFO - summarization-bayes-testrun - Started
+    Configuration (modified, added, typechanged, doc):
+      cutoff = 0.1                       # proportion of words with highest TF-IDF score to be considered important words
+      idf_path = None                    # path to a pickle file containing the IDF dictionary
+      model_path = 'model'               # where to load or save the trained model
+      seed = 313680915                   # the random seed for this experiment
+      corpus:
+        dev = None                       # path to dev oracle JSONL file
+        encoding = 'utf-8'               # file encoding
+        lower = True                     # whether to lowercase words
+        remove_puncts = True             # whether to remove punctuations
+        replace_digits = True            # whether to replace digits
+        stopwords_path = None            # path to stopwords file, one per each line
+        test = 'test.jsonl'              # path to test oracle JSONL file
+        train = 'train.jsonl'            # path to train oracle JSONL file
+      eval:
+        delete_temps = True              # whether to delete temp files after finishes
+        on = 'test'                      # which corpus set the evaluation should be run on
+        size = 3                         # extract at most this number of sentences as summary
+      summ:
+        path = 'test.jsonl'              # path to the JSONL file to summarize
+        size = 3                         # extract at most this number of sentences as summary
+    INFO - summarization-bayes-testrun - Completed after 0:00:00
+
+So, to train the model on a train corpus in ``/tmp/train.jsonl`` and save the model to ``/tmp/models/bayes.model``, simply run::
+
+    $ ./run_bayes.py train with corpus.train=/tmp/train.jsonl model_path=/tmp/models/bayes.model
+
+Evaluating a model
+------------------
+
+Evaluating an unsupervised model is simple. For example, to evaluate a LEAD-N summarizer::
+
+    $ ./run_lead.py evaluate with corpus.test=/tmp/test.jsonl
 
 This command will print an output like this::
 
     INFO - run_experiment - Running command 'evaluate'
     INFO - run_experiment - Started
-    INFO - read_jsonl - Reading test JSONL file from test.01.jsonl
+    INFO - read_jsonl - Reading test JSONL file from /tmp/test.jsonl
     INFO - evaluate - References directory: /var/folders/p9/4pp5smf946q9xtdwyx792cn40000gn/T/tmp7jct3ede
     INFO - evaluate - Hypotheses directory: /var/folders/p9/4pp5smf946q9xtdwyx792cn40000gn/T/tmpnaqoav4o
     INFO - evaluate - ROUGE scores: {'ROUGE-1-R': 0.71752, 'ROUGE-1-F': 0.63514, 'ROUGE-2-R': 0.62384, 'ROUGE-2-F': 0.5502, 'ROUGE-L-R': 0.70998, 'ROUGE-L-F': 0.62853}
     INFO - evaluate - Deleting temporary files and directories
     INFO - run_experiment - Result: 0.63514
     INFO - run_experiment - Completed after 0:00:11
+
+Evaluating a trained model is done similarly with ``model_path`` configuration is set to the path to the saved model.
 
 Setting up Mongodb observer
 ---------------------------
