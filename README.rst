@@ -112,5 +112,17 @@ License
 
 Apache License, Version 2.0.
 
+Citation
+========
+
+If you're using our code or dataset, please cite::
+
+    @article{kurniawan2018,
+      author={Kurniawan, Kemal and Louvan, Samuel},
+      year={2018},
+      title={IndoSum: A New Benchmark Dataset for Indonesian Text Summarization},
+      url={http://arxiv.org/abs/1810.05334}
+    }
+
 
 .. [CL16] Cheng, J., & Lapata, M. (2016). Neural summarization by extracting sentences and words. In Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (pp. 484–494). Berlin, Germany: Association for Computational Linguistics. Retrieved from http://www.aclweb.org/anthology/P16-1046
